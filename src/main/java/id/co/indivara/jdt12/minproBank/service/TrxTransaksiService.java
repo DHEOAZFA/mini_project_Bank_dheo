@@ -14,16 +14,19 @@ import java.time.Instant;
 
 @Service
 public class TrxTransaksiService {
+
 @Autowired
     TrxTransaksiRepository trxTransaksiRepository;
+
 @Autowired
     TrxSaldoRepository trxSaldoRepository;
+
 @Autowired
     MstAkunRepository mstAkunRepository;
     @Transactional
     public TrxTransaksi buatSetor (TrxTransaksi akun)throws Exception {
-        MstAkun hasil = mstAkunRepository.findById(akun.getAkunId()).orElseThrow(() -> new Exception("account tidak ditemukan"));
-        TrxSaldo saldo = trxSaldoRepository.findById(akun.getAkunId()).orElseThrow(() -> new Exception("account balance tidak ditemukan"));
+        MstAkun hasil = mstAkunRepository.findById(akun.getAkunId()).orElseThrow(() -> new Exception("akun tidak ditemukan"));
+        TrxSaldo saldo = trxSaldoRepository.findByidSaldo(akun.getAkunId()).orElseThrow(() -> new Exception("idsaldo tidak ditemukan"));
         akun.setAkun(hasil);
         akun.setTipeTransaksi(TrxTransaksi.EnumTransaksi.SETOR);
         akun.setTanggalTransaksi(Instant.now());

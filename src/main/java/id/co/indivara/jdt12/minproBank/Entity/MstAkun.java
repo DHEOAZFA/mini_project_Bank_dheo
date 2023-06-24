@@ -34,7 +34,7 @@ public class MstAkun {
     private MstPelanggan pelanggan;
 
     @Column (name = "norekening")
-    private Integer norekening;
+    private Integer noRekening;
     @Column (name = "pin")
     private String pin;
 }

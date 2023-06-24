@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MstAkunRepository extends JpaRepository<MstAkun,String> {
+
 }
