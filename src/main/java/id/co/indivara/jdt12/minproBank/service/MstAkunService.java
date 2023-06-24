@@ -29,7 +29,7 @@ public class MstAkunService {
 
         if (pelanggan != null){
             MstAkun act = mstAkunRepository.save(MstAkun.builder().
-                    noRekening(simpanAkun.getNoRekening()).
+                    noRekening(String.valueOf(simpanAkun.getNoRekening())).
                     idPelanggan(pelanggan.getIdPelanggan()). //ditambahin
                             pelanggan(pelanggan).
                     pin(String.valueOf(simpanAkun.getPin())).

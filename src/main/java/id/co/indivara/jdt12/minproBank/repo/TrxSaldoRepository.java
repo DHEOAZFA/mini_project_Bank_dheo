@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface TrxSaldoRepository extends JpaRepository<TrxSaldo, String> {
-    Optional<TrxSaldo> findByidSaldo(String idSaldo);
+    Optional<TrxSaldo> findByIdSaldo(String idSaldo);
+    Optional<TrxSaldo> findByAkunId(String akunId);
 }

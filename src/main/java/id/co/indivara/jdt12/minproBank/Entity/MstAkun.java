@@ -33,8 +33,9 @@ public class MstAkun {
     @JsonIgnore
     private MstPelanggan pelanggan;
 
-    @Column (name = "norekening")
-    private Integer noRekening;
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @Column (name = "no_rekening")
+    private String noRekening;
     @Column (name = "pin")
     private String pin;
 }

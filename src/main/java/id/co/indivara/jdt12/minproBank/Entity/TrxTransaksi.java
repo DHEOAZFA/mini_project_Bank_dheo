@@ -34,8 +34,9 @@ public class TrxTransaksi {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private MstAkun akun;
 
-    @Column(name = "No_Rekening")
-    private Integer noRekening;
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @Column(name = "noRekening")
+    private String noRekening;
 
 
     @Column(name = "tanggal_Transaksi") //tanggal pembuatan transaksi
@@ -43,7 +44,9 @@ public class TrxTransaksi {
     private Instant tanggalTransaksi;
     @Column(name = "jumlah")
     private BigDecimal jumlah;
+
     @Column(name="tipe_transaksi")
+    @Enumerated(EnumType.STRING)
     private EnumTransaksi tipeTransaksi;
 
     public enum EnumTransaksi {
