@@ -21,7 +21,7 @@ import java.util.List;
             return hasil;
         }
 
-        @GetMapping("/account")
+        @GetMapping("/akun")
         public List<MstAkun> getAllaccount() {
             return mstAkunService.getAllAccount();
         }

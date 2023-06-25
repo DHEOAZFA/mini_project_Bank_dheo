@@ -28,8 +28,4 @@ public class TrxTransaksiController {
         return trxTransaksiService.transfer(akun);
     }
 
-//    @GetMapping("/accounttransaction")
-//    public List<TrxTransaksi> getAlltrxTransaksi(){
-//        return accountTransactionService.getAllAccountTransaction();
-//    }
 }

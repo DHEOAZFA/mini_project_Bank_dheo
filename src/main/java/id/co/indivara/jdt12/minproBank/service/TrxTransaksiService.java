@@ -1,8 +1,11 @@
 package id.co.indivara.jdt12.minproBank.service;
 
 import id.co.indivara.jdt12.minproBank.Entity.MstAkun;
+import id.co.indivara.jdt12.minproBank.Entity.MstPelanggan;
 import id.co.indivara.jdt12.minproBank.Entity.TrxSaldo;
 import id.co.indivara.jdt12.minproBank.Entity.TrxTransaksi;
+import id.co.indivara.jdt12.minproBank.model.HistoryPelanggan;
+import id.co.indivara.jdt12.minproBank.model.InfoPelanggan;
 import id.co.indivara.jdt12.minproBank.repo.MstAkunRepository;
 import id.co.indivara.jdt12.minproBank.repo.TrxSaldoRepository;
 import id.co.indivara.jdt12.minproBank.repo.TrxTransaksiRepository;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class TrxTransaksiService {
@@ -41,7 +45,7 @@ public class TrxTransaksiService {
     @Transactional
     public TrxTransaksi tarikTunai (TrxTransaksi akun)throws Exception {
         MstAkun hasil = mstAkunRepository.findById(akun.getAkunId()).orElseThrow(() -> new Exception("account tidak ditemukan"));
-        TrxSaldo trxSaldo = trxSaldoRepository.findByAkunId(akun.getAkunId()).orElseThrow(() -> new Exception("account balance tidak ditemukan"));
+        TrxSaldo trxSaldo = trxSaldoRepository.findByMstAkun(hasil).orElseThrow(() -> new Exception("account balance tidak ditemukan"));
         BigDecimal uangkurang= trxSaldo.getSaldo().subtract(akun.getJumlah());
        if(uangkurang.compareTo(BigDecimal.ZERO)<0){
            throw new Exception("maaf anda uang kurang");
@@ -60,22 +64,29 @@ public class TrxTransaksiService {
     @Transactional
     public TrxTransaksi transfer (TrxTransaksi akun)throws Exception {
         MstAkun hasil = mstAkunRepository.findById(akun.getAkunId()).orElseThrow(() -> new Exception("account tidak ditemukan"));
-        TrxSaldo trxSaldo = trxSaldoRepository.findByAkunId(akun.getAkunId()).orElseThrow(() -> new Exception("account balance tidak ditemukan"));
+        TrxSaldo trxSaldo = trxSaldoRepository.findByMstAkun(hasil).orElseThrow(() -> new Exception("account balance tidak ditemukan"));
         MstAkun akunTujuan= mstAkunRepository.findByNoRekening(hasil.getNoRekening()).orElseThrow(()->new Exception("tujuan tidak ditemukan"));
-        TrxSaldo akunSaldoTujuan= trxSaldoRepository.findByAkunId(akunTujuan.getNoRekening()).orElseThrow(()->new Exception("saldo tidak ada"));
+        TrxSaldo akunSaldoTujuan= trxSaldoRepository.findByMstAkun(hasil).orElseThrow(()->new Exception("saldo tidak ada"));
+
         BigDecimal uangKurang= trxSaldo.getSaldo().subtract(akun.getJumlah());
         if(uangKurang.compareTo(BigDecimal.ZERO)<0){
             throw new Exception("uangnya kurang");
         }
+
         BigDecimal uangTujuan=akunSaldoTujuan.getSaldo().add(akun.getJumlah());
+
         akun.setAkun(hasil);
         akun.setTipeTransaksi(TrxTransaksi.EnumTransaksi.TRANSFER);
         akun.setTanggalTransaksi(Instant.now());
         trxTransaksiRepository.save(akun);
         trxSaldo.setSaldo(trxSaldo.getSaldo().min(akun.getJumlah()));
+
         akunSaldoTujuan.setSaldo(uangTujuan);
         trxSaldoRepository.save(akunSaldoTujuan);
+
+        trxSaldoRepository.save(trxSaldo);
         return trxTransaksiRepository.save(akun);
     }
+
 }
 

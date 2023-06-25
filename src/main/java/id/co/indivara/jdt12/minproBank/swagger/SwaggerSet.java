@@ -17,7 +17,7 @@ public class SwaggerSet {
     public Docket api(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("id.co.indivara.jdt12.miniprojectbank.controller"))
+                .apis(RequestHandlerSelectors.basePackage("id.co.indivara.jdt12.minproBank.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

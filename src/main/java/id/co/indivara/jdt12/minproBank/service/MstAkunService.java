@@ -3,10 +3,14 @@ package id.co.indivara.jdt12.minproBank.service;
 import id.co.indivara.jdt12.minproBank.Entity.MstAkun;
 import id.co.indivara.jdt12.minproBank.Entity.MstPelanggan;
 import id.co.indivara.jdt12.minproBank.Entity.TrxSaldo;
+import id.co.indivara.jdt12.minproBank.Entity.TrxTransaksi;
+import id.co.indivara.jdt12.minproBank.model.HistoryPelanggan;
+import id.co.indivara.jdt12.minproBank.model.InfoPelanggan;
 import id.co.indivara.jdt12.minproBank.model.SimpanAkun;
 import id.co.indivara.jdt12.minproBank.repo.MstAkunRepository;
 import id.co.indivara.jdt12.minproBank.repo.MstPelangganRepository;
 import id.co.indivara.jdt12.minproBank.repo.TrxSaldoRepository;
+import id.co.indivara.jdt12.minproBank.repo.TrxTransaksiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,8 @@ public class MstAkunService {
     TrxSaldoRepository trxSaldoRepository;
 @Autowired
     MstPelangganRepository mstPelangganRepository;
+@Autowired
+    TrxTransaksiRepository trxTransaksiRepository;
     public List<MstAkun> getAllAccount(){
         return (List<MstAkun>) mstAkunRepository.findAll();
     }
@@ -44,5 +50,10 @@ public class MstAkunService {
         }
         return false;
 }
+    public HistoryPelanggan historyPelanggan(String akunId) throws Exception {
+        MstAkun akun = mstAkunRepository.findById(akunId).orElseThrow(()-> new Exception("pelanggan Error"));
+        List<TrxTransaksi> trx = trxTransaksiRepository.findAllByTransaction(akun);
+        return new HistoryPelanggan(akun,trx);
+    }
 
 }

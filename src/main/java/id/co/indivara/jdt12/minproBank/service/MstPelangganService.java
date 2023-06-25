@@ -28,7 +28,6 @@ public class MstPelangganService {
     public InfoPelanggan detailPelanggan(String idPelanggan) throws Exception {
         MstPelanggan pelanggan = mstPelangganRepository.findById(idPelanggan).orElseThrow(()-> new Exception("pelanggan Error"));
         List<MstAkun> akuns = mstAkunRepository.findAllByPelanggan(pelanggan);
-        // ini code dibawah ini
         return new InfoPelanggan(pelanggan,akuns);
     }
 }
