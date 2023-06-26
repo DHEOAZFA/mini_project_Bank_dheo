@@ -14,7 +14,7 @@ public class TrxSaldoController {
     TrxSaldoService trxSaldoService;
 @Autowired
     TrxSaldoRepository trxSaldoRepository;
-@GetMapping("/saldoById")
+@GetMapping("/saldoById/{idsaldo}")
     public TrxSaldo findByidSaldo(@PathVariable("idSaldo")String idSaldo){
     return trxSaldoRepository.findById(idSaldo).get();
 }

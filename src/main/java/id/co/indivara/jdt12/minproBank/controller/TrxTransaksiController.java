@@ -27,5 +27,9 @@ public class TrxTransaksiController {
     public TrxTransaksi saveTransfer(@RequestBody TrxTransaksi akun) throws Exception{
         return trxTransaksiService.transfer(akun);
     }
+    @GetMapping("/transaksi")
+    public List<TrxTransaksi> getAlltransaksi(){
+        return trxTransaksiService.getAlltransaksi();
+    }
 
 }

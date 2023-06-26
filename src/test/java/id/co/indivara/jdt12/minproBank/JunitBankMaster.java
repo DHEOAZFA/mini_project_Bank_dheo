@@ -36,7 +36,7 @@ public class JunitBankMaster {
     @Before
     public  void SetUp(){
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(mstAkunService).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(mstAkunController).build();
     }
 @Test
     public void getAllAkun()throws Exception{

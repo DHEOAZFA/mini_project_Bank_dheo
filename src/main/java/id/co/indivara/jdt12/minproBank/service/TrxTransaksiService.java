@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class TrxTransaksiService {
@@ -24,6 +25,9 @@ public class TrxTransaksiService {
 
 @Autowired
     MstAkunRepository mstAkunRepository;
+    public List<TrxTransaksi> getAlltransaksi(){
+        return (List<TrxTransaksi>) trxTransaksiRepository.findAll();
+    }
     @Transactional
     public TrxTransaksi buatSetor (TrxTransaksi akun)throws Exception {
         MstAkun hasil = mstAkunRepository.findById(akun.getAkunId()).orElseThrow(() -> new Exception("akun tidak ditemukan"));

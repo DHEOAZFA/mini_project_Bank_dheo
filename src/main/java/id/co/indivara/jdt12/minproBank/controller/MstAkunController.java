@@ -1,13 +1,11 @@
 package id.co.indivara.jdt12.minproBank.controller;
 
 import id.co.indivara.jdt12.minproBank.Entity.MstAkun;
+import id.co.indivara.jdt12.minproBank.model.HistoryPelanggan;
 import id.co.indivara.jdt12.minproBank.model.SimpanAkun;
 import id.co.indivara.jdt12.minproBank.service.MstAkunService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
     @RestController
@@ -26,4 +24,8 @@ import java.util.List;
             return mstAkunService.getAllAccount();
         }
 
+        @GetMapping("/historytransaction/{akunid}")
+        public HistoryPelanggan gethistory (@PathVariable("akunid") String id) throws Exception {
+            return mstAkunService.historyPelanggan(id);
+        }
 }
