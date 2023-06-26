@@ -22,3 +22,4 @@ public class BankSecurity extends WebSecurityConfigurerAdapter {
                     .and().csrf().disable().formLogin().disable();
         }
 }
+

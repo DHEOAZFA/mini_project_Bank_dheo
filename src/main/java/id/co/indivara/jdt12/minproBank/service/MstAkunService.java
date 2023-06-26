@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class MstAkunService {
@@ -50,11 +51,14 @@ public class MstAkunService {
         }
         return false;
 }
-    public HistoryPelanggan historyPelanggan(String akunId) throws Exception {
-        MstAkun akun = mstAkunRepository.findById(akunId).orElseThrow(()-> new Exception("pelanggan Error"));
-        List<TrxTransaksi> trx = trxTransaksiRepository.
-                findAllByTransaksiId(akun);
-        return new HistoryPelanggan(akun,trx);
+
+    public HistoryPelanggan historyPelanggan(String akunId) throws NoSuchElementException {
+        MstAkun akun = mstAkunRepository.findById(akunId)
+                .orElseThrow(() -> new NoSuchElementException("Akun tidak ditemukan"));
+
+        List<TrxTransaksi> transaksis = trxTransaksiRepository.findAllByAkun(akun);
+
+        return new HistoryPelanggan(akun, transaksis);
     }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class MstPelangganService {
@@ -25,9 +26,13 @@ public class MstPelangganService {
         return mstPelangganRepository.save(pelanggan);
     }
 
-    public InfoPelanggan detailPelanggan(String idPelanggan) throws Exception {
-        MstPelanggan pelanggan = mstPelangganRepository.findById(idPelanggan).orElseThrow(()-> new Exception("pelanggan Error"));
+    public InfoPelanggan detailPelanggan(String idPelanggan) throws NoSuchElementException {
+        MstPelanggan pelanggan = mstPelangganRepository.findById(idPelanggan)
+                .orElseThrow(() -> new NoSuchElementException("Pelanggan tidak ditemukan"));
+
         List<MstAkun> akuns = mstAkunRepository.findAllByPelanggan(pelanggan);
-        return new InfoPelanggan(pelanggan,akuns);
+
+        return new InfoPelanggan(pelanggan, akuns);
     }
+
 }
