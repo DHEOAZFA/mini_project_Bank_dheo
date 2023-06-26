@@ -36,14 +36,14 @@ public class MstAkunService {
         if (pelanggan != null){
             MstAkun act = mstAkunRepository.save(MstAkun.builder().
                     noRekening(String.valueOf(simpanAkun.getNoRekening())).
-                    idPelanggan(pelanggan.getIdPelanggan()). //ditambahin
+                    idPelanggan(pelanggan.getIdPelanggan()).
                             pelanggan(pelanggan).
                     pin(String.valueOf(simpanAkun.getPin())).
                     build());
             TrxSaldo trxSaldo = new TrxSaldo();
-            //masalah
+
             trxSaldo.setAkunId(act.getAkunId());
-            trxSaldo.setMstAkun(act); //customerId ga masuk
+            trxSaldo.setMstAkun(act);
             trxSaldo.setSaldo(BigDecimal.ZERO);
             trxSaldoRepository.save(trxSaldo);
             return true;
@@ -52,7 +52,8 @@ public class MstAkunService {
 }
     public HistoryPelanggan historyPelanggan(String akunId) throws Exception {
         MstAkun akun = mstAkunRepository.findById(akunId).orElseThrow(()-> new Exception("pelanggan Error"));
-        List<TrxTransaksi> trx = trxTransaksiRepository.findAllByTransaction(akun);
+        List<TrxTransaksi> trx = trxTransaksiRepository.
+                findAllByTransaksiId(akun);
         return new HistoryPelanggan(akun,trx);
     }
 

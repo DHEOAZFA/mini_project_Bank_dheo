@@ -1,11 +1,8 @@
 package id.co.indivara.jdt12.minproBank.service;
 
 import id.co.indivara.jdt12.minproBank.Entity.MstAkun;
-import id.co.indivara.jdt12.minproBank.Entity.MstPelanggan;
 import id.co.indivara.jdt12.minproBank.Entity.TrxSaldo;
 import id.co.indivara.jdt12.minproBank.Entity.TrxTransaksi;
-import id.co.indivara.jdt12.minproBank.model.HistoryPelanggan;
-import id.co.indivara.jdt12.minproBank.model.InfoPelanggan;
 import id.co.indivara.jdt12.minproBank.repo.MstAkunRepository;
 import id.co.indivara.jdt12.minproBank.repo.TrxSaldoRepository;
 import id.co.indivara.jdt12.minproBank.repo.TrxTransaksiRepository;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.List;
 
 @Service
 public class TrxTransaksiService {

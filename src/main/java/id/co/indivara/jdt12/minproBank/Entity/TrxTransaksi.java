@@ -25,7 +25,7 @@ public class TrxTransaksi {
     @Column(name = "id_transaksi")
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    private String transactionId;
+    private String transaksiId;
 
     @Column(name = "akunId")
     private String akunId;
