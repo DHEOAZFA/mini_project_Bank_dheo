@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class JunitBankMaster {
+public class   JunitBankMaster {
     @Autowired
     private MockMvc mockMvc;
     @Autowired

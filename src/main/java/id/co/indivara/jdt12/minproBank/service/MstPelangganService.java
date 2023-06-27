@@ -34,5 +34,5 @@ public class MstPelangganService {
 
         return new InfoPelanggan(pelanggan, akuns);
     }
-
+ 
 }
