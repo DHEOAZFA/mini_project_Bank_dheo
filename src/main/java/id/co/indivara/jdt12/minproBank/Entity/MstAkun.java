@@ -19,16 +19,16 @@ import javax.persistence.*;
 @Builder
 public class MstAkun {
     @Id
-    @Column(name = "akunId") //buat kalau nama d db sama nama d sini beda biar nyamain //di db
+    @Column(name = "akun_id")
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String akunId; //di java
 
-    @Column(name = "idPelanggan")
+    @Column(name = "id_pelanggan")
     private String idPelanggan;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idPelanggan",insertable = false, updatable = false)
+    @JoinColumn(name = "id_pelanggan",insertable = false, updatable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //buat menghapus di akun ini saja
     @JsonIgnore
     private MstPelanggan pelanggan;
@@ -38,4 +38,5 @@ public class MstAkun {
     private String noRekening;
     @Column (name = "pin")
     private String pin;
+
 }

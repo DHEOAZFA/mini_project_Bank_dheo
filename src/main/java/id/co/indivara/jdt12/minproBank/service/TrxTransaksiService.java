@@ -49,9 +49,11 @@ public class TrxTransaksiService {
         TrxSaldo trxSaldo = trxSaldoRepository.findByMstAkun(hasil).orElseThrow(() -> new Exception("account balance tidak ditemukan"));
         BigDecimal uangkurang= trxSaldo.getSaldo().subtract(akun.getJumlah());
        if(uangkurang.compareTo(BigDecimal.ZERO)<0){
-           throw new Exception("maaf anda uang kurang");
+           throw new Exception("maaf uang anda kurang");
        }
         akun.getTipeTransaksi();
+
+
         akun.setAkun(hasil);
         akun.setTipeTransaksi(TrxTransaksi.EnumTransaksi.TARIKTUNAI);
         akun.setTanggalTransaksi(Instant.now());
@@ -63,30 +65,39 @@ public class TrxTransaksiService {
     }
 
     @Transactional
-    public TrxTransaksi transfer (TrxTransaksi akun)throws Exception {
-        MstAkun hasil = mstAkunRepository.findById(akun.getAkunId()).orElseThrow(() -> new Exception("account tidak ditemukan"));
-        TrxSaldo trxSaldo = trxSaldoRepository.findByMstAkun(hasil).orElseThrow(() -> new Exception("account balance tidak ditemukan"));
-        MstAkun akunTujuan= mstAkunRepository.findByNoRekening(hasil.getNoRekening()).orElseThrow(()->new Exception("tujuan tidak ditemukan"));
-        TrxSaldo akunSaldoTujuan= trxSaldoRepository.findByMstAkun(hasil).orElseThrow(()->new Exception("saldo tidak ada"));
+    public TrxTransaksi transfer(TrxTransaksi akun) {
+        MstAkun hasil = mstAkunRepository.findById(akun.getAkunId())
+                .orElseThrow(() -> new NoSuchElementException("Akun tidak ditemukan"));
 
-        BigDecimal uangKurang= trxSaldo.getSaldo().subtract(akun.getJumlah());
-        if(uangKurang.compareTo(BigDecimal.ZERO)<0){
-            throw new Exception("uangnya kurang");
+        TrxSaldo trxSaldo = trxSaldoRepository.findByMstAkun(hasil)
+                .orElseThrow(() -> new NoSuchElementException("Saldo akun tidak ditemukan"));
+
+        MstAkun akunTujuan = mstAkunRepository.findByNoRekening(akun.getNoRekening())
+                .orElseThrow(() -> new NoSuchElementException("Akun tujuan tidak ditemukan"));
+
+        TrxSaldo saldotujuan = trxSaldoRepository.findByMstAkun(akunTujuan)
+                .orElseThrow(() -> new NoSuchElementException("Saldo akun tujuan tidak ditemukan"));
+
+        BigDecimal gadaduit = trxSaldo.getSaldo().subtract(akun.getJumlah());
+        if (gadaduit.compareTo(BigDecimal.ZERO) < 0) {
+            throw new RuntimeException("Saldo akun tidak mencukupi");
         }
 
-        BigDecimal uangTujuan=akunSaldoTujuan.getSaldo().add(akun.getJumlah());
+        BigDecimal uangtujuan = saldotujuan.getSaldo().add(akun.getJumlah());
 
-        akun.setAkun(hasil);
-        akun.setTipeTransaksi(TrxTransaksi.EnumTransaksi.TRANSFER);
-        akun.setTanggalTransaksi(Instant.now());
-        trxTransaksiRepository.save(akun);
-        trxSaldo.setSaldo(trxSaldo.getSaldo().min(akun.getJumlah()));
+        TrxTransaksi newTrxTransaksi = new TrxTransaksi();
+        newTrxTransaksi.setAkun(hasil);
+        newTrxTransaksi.setTipeTransaksi(TrxTransaksi.EnumTransaksi.TRANSFER);
+        newTrxTransaksi.setTanggalTransaksi(Instant.now());
+        trxTransaksiRepository.save(newTrxTransaksi);
 
-        akunSaldoTujuan.setSaldo(uangTujuan);
-        trxSaldoRepository.save(akunSaldoTujuan);
-
+        trxSaldo.setSaldo(gadaduit);
         trxSaldoRepository.save(trxSaldo);
-        return trxTransaksiRepository.save(akun);
+
+        saldotujuan.setSaldo(uangtujuan);
+        trxSaldoRepository.save(saldotujuan);
+
+        return newTrxTransaksi;
     }
 
 }

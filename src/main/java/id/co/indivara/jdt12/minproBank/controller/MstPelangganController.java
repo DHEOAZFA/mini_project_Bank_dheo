@@ -14,8 +14,7 @@ public class MstPelangganController {
     MstPelangganService mstPelangganService;
 @PostMapping("/simpanPelanggan")
 public MstPelanggan simpanPelanggan(@RequestBody MstPelanggan pelanggan){ return mstPelangganService.buatPelanggan(pelanggan);}
-    @GetMapping("/pelanggan")
-    public List<MstPelanggan> getAllPelanggan(){return mstPelangganService.getAllCustomer();}
+
     @GetMapping("/pelanggan/{idPelanggan}")
     public InfoPelanggan getPelanggan(@PathVariable("idPelanggan") String id)throws Exception{
         return mstPelangganService.detailPelanggan(id);

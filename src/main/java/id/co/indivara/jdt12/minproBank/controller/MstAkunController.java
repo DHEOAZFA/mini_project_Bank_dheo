@@ -19,11 +19,6 @@ import java.util.List;
             return hasil;
         }
 
-        @GetMapping("/akun")
-        public List<MstAkun> getAllaccount() {
-            return mstAkunService.getAllAccount();
-        }
-
         @GetMapping("/historytransaction/{akunid}")
         public HistoryPelanggan gethistory (@PathVariable("akunid") String id) throws Exception {
             return mstAkunService.historyPelanggan(id);
